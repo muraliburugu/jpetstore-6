@@ -21,6 +21,9 @@ Essentials
 - JPetstore with Vaadin and Spring Boot with Java Config https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot
 - JPetstore on MyBatis Spring Boot Starter https://github.com/kazuki43zoo/mybatis-spring-boot-jpetstore
 
+## Project-Architecture
+![Pet-shop-project-architecture](https://github.com/user-attachments/assets/db64b6bc-b1e9-4fca-853b-f0356eaf1bb9)
+
 ## Run on Application Server
 Running JPetStore sample under Tomcat (using the [cargo-maven2-plugin](https://codehaus-cargo.github.io/cargo/Maven2+plugin.html)).
 
