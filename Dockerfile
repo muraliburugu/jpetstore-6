@@ -1,21 +1,16 @@
-#
-#    Copyright 2010-2023 the original author or authors.
-#
-#    Licensed under the Apache License, Version 2.0 (the "License");
-#    you may not use this file except in compliance with the License.
-#    You may obtain a copy of the License at
-#
-#       https://www.apache.org/licenses/LICENSE-2.0
-#
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS,
-#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#    See the License for the specific language governing permissions and
-#    limitations under the License.
-#
+# Stage 1: Build the application
+FROM maven:3.8.6-openjdk-17 AS builder
+WORKDIR /app
+COPY . .
+RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 
-FROM openjdk:17.0.2
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
-RUN ./mvnw clean package
-CMD ./mvnw cargo:run -P tomcat90
+# Stage 2: Run the application
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/target/*.war /app/jpetstore.war
+
+# Expose the port on which the application runs
+EXPOSE 8080
+
+# Command to run the application
+CMD ["java", "-jar", "/app/jpetstore.war"]
