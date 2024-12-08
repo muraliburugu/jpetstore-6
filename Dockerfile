@@ -15,7 +15,19 @@
 #
 
 FROM openjdk:17.0.2
-COPY . /usr/src/myapp
+
+# Set the working directory in the container
 WORKDIR /usr/src/myapp
-RUN ./mvnw clean package
-CMD ./mvnw cargo:run -P tomcat90
+
+# Copy the entire project into the container
+COPY . .
+
+# Make the mvnw file executable and build the project
+RUN chmod +x ./mvnw && ./mvnw clean package
+
+# Expose port 8080 if it's a web application
+EXPOSE 8080
+
+# Start the application with cargo:run for Tomcat
+CMD ["./mvnw", "cargo:run", "-P", "tomcat90"]
+
