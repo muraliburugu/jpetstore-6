@@ -14,31 +14,8 @@
 #    limitations under the License.
 #
 
-- name: docker build and push
-  hosts: 172.31.27.123  # Replace with the hostname or IP address of your target server
-  become: yes  # Run tasks with sudo privileges
-
-  tasks:
-    - name: Update apt package cache
-      apt:
-        update_cache: yes   
-
-    - name: Build Docker Image
-      command: docker build -t petstore .
-      args:
-        chdir: /var/lib/jenkins/workspace/petstore
-
-    - name: tag image
-      command: docker tag petstore:latest muraliburugu507/petstore:latest 
-
-    - name: Log in to Docker Hub
-      community.docker.docker_login:
-        registry_url: https://index.docker.io/v1/
-        username: dockerhub username
-        password: dockerhub password/PAT
-
-    - name: Push image
-      command: docker push muraliburugu507/petstore:latest
-
-    - name: Run container
-      command: docker run -d --name pet1 -p 8081:8080 muraliburugu507/petstore:latest
+FROM openjdk:17.0.2
+COPY . /usr/src/myapp
+WORKDIR /usr/src/myapp
+RUN ./mvnw clean package
+CMD ./mvnw cargo:run -P tomcat90
